@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    var SLR = function (selector, context) {
+        return new SLR.prototype.init(selector, context)
+    }
+    SLR.fn = SLR.prototype = {
+        constractor: SLR,
+        init: function (selector, context) {
+            this.selector = selector;
+            this.context = context;
+        }
+    }
+    SLR.prototype.init.prototype = SLR.prototype;
+    SLR.extend = SLR.prototype.extend = function (obj) {
+        for (var key in obj) {
+            SLR[key] = obj[key]
+        }
+    }
+    SLR.extend({
+        isArray: Array.isArray,
+        ajax: function () {
+        }
+    })
+    SLR.prototype.extend({
+        addClass: function () {
+            console.log("add class...")
+        },
+        sayHello: function () {
+            console.log("Hello" + this.selector)
+        }
+    })
+    window.SLR = window.$ = SLR;
+    /*
+     * 如果在AMD环境下，return jQuery
+     */
+    if (typeof define === "function" && define.amd) {
+        define("jQuery", [], function () {
+            return jQuery;
+        })
+    }
+</script>
+</body>
+</html>
