@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Document</title>
+</head>
+<body>
+
+<div id="root"></div>
+
+
+
+<script>
+  const root = document.querySelector('#root')
+  const button = document.createElement('button')
+  button.innerText = 'Request idle'
+  root.appendChild(button)
+
+  const data = new Array(100).fill(null)
+  button.addEventListener('click', () => {
+    requestIdleCallback(handle)
+  })
+
+  let taskIndex = 0
+  const handle = (deadline) => {
+    while(deadline.timeRemaining() > 0 && taskIndex < data.length) {
+      const div = document.createElement('div')
+      div.innerText =  `${taskIndex}`
+      document.body.insertAdjacentElement('beforeend', div)
+      taskIndex++
+    }
+    if (taskIndex < data.length) {
+      window.requestIdleCallback(handle)
+    } else {
+      requestIdleCallback(handle)
+    }
+  }
+
+</script>
+</body>
+</html>
